@@ -1,4 +1,4 @@
-Creating a Repository
+# Creating a Repository
 To turn any folder into a Git repository, you use:
 
 git init
@@ -74,7 +74,7 @@ Timestamp	When it was created
 Hash	Unique identifier
 
 /////
-Viewing Commit History
+# Viewing Commit History
 To see all your commits:
 
 git log
