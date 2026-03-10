@@ -38,6 +38,19 @@ my-project/
 The `.git` folder is basically **Git’s brain**.
 
 ---
+# clone 
+What git clone Actually Does
+
+Running:
+
+git clone https://github.com/org/project.git
+
+Internally performs something like:
+
+git init
+git remote add origin https://github.com/org/project.git
+git fetch
+git checkout main
 
 # Working Directory
 
@@ -401,4 +414,348 @@ git log --oneline --graph --all
 | Rebase with main         | `git rebase origin/main`   |
 
 
+# MERGE CONFLICT EXAMPLE 
+1️⃣ Merge Conflict (Short Idea)
 
+A merge conflict happens when two branches change the same part of the same file, and Git doesn't know which version to keep.
+
+Example:
+
+main branch
+login.js → line 5 changed to "Login successful"
+
+feature-login branch
+login.js → line 5 changed to "User logged in"
+
+Git cannot decide which one is correct → merge conflict occurs.
+
+Merge Conflict — Scenario → Commands
+| Scenario                            | Command                   |
+| ----------------------------------- | ------------------------- |
+| Switch to main branch               | `git switch main`         |
+| Try merging feature branch          | `git merge login-feature` |
+| Git shows conflict                  | *(Git stops merge)*       |
+| Open file and fix conflict manually | *(edit file)*             |
+| Stage resolved file                 | `git add login.js`        |
+| Complete merge                      | `git commit`              |
+
+
+////
+Example Conflict File
+
+After merging, Git shows something like this inside the file:
+function login() {
+<<<<<<< HEAD
+console.log("Login successful")
+=======
+console.log("User logged in")
+>>>>>>> login-feature
+}
+
+# OCR Developer Workflow (Scenario → Commands)
+
+| Scenario                      | Command                             |
+| ----------------------------- | ----------------------------------- |
+| Clone the project from GitHub | `git clone <repo-url>`              |
+| Go into project folder        | `cd project-name`                   |
+| Create OCR feature branch     | `git switch -c ocr-feature`         |
+| Start coding OCR feature      | *(edit files)*                      |
+| Stage changes                 | `git add .`                         |
+| Commit changes                | `git commit -m "added OCR feature"` |
+| Push branch to GitHub         | `git push -u origin ocr-feature`    |
+| Create Pull Request           | *(done on GitHub UI)*               |
+| After approval merge to main  | *(maintainer merges PR)*            |
+
+
+Open Source / No Direct Access (Fork + Pull Request)
+
+If your friend doesn't have permission, they must fork the repo first.
+
+Workflow
+Original Repo (your repo)
+        ↑
+      Pull Request
+        ↑
+Friend Fork Repo
+# for no contribute access how to pr
+| Scenario                   | Command                       |
+| -------------------------- | ----------------------------- |
+| Fork repo                  | *(GitHub button)*             |
+| Clone forked repo          | `git clone <forked-repo-url>` |
+| Enter project              | `cd project-name`             |
+| Create branch              | `git switch -c ocr-feature`   |
+| Code changes               | *(edit files)*                |
+| Stage changes              | `git add .`                   |
+| Commit                     | `git commit -m "OCR feature"` |
+| Push to fork               | `git push origin ocr-feature` |
+| Create PR to original repo | *(GitHub UI)*                 |
+
+
+# remote
+# Git Remote (Simple Explanation)
+
+## What is a Remote?
+
+A **remote** is the online version of your Git repository.
+
+Example:
+Your code on your laptop = **local repository**  
+Your code on GitHub = **remote repository**
+
+So Git uses **remote** to connect your local project to GitHub.
+
+---
+
+# Adding a Remote Repository
+
+| Scenario | Command |
+|---|---|
+| Connect local repo to GitHub repo | `git remote add origin https://github.com/you/repo.git` |
+
+Explanation:
+
+```
+git remote add   → add a remote connection
+origin           → name of the remote (default name)
+repo URL         → GitHub repository link
+```
+
+Example:
+
+```bash
+git remote add origin https://github.com/kaushal/myproject.git
+```
+
+Now your local Git knows where the **GitHub repo is located**.
+
+---
+
+# Viewing Remote Repositories
+
+| Scenario | Command |
+|---|---|
+| See connected remote repositories | `git remote -v` |
+
+Example output:
+
+```
+origin  https://github.com/you/repo.git (fetch)
+origin  https://github.com/you/repo.git (push)
+```
+
+Meaning:
+
+```
+fetch → where Git pulls code from
+push  → where Git sends code to
+```
+
+---
+
+# Full Example Workflow
+
+| Scenario | Command |
+|---|---|
+| Initialize Git | `git init` |
+| Add files | `git add .` |
+| Commit code | `git commit -m "first commit"` |
+| Add remote repo | `git remote add origin https://github.com/you/repo.git` |
+| Push code to GitHub | `git push -u origin main` |
+
+---
+
+# Simple Visual
+
+```
+Your Laptop (Local Repo)
+        │
+        │ git push
+        ▼
+GitHub Repository (Remote Repo)
+```
+
+---
+
+# Important Note
+
+```
+origin is just a name.
+You could name it anything, but "origin" is the standard.
+```
+
+Example:
+
+```
+git remote add myrepo https://github.com/you/repo.git
+```
+
+But most developers always use:
+
+```
+origin
+```
+
+# CI/CD
+
+# Code Review and CI/CD (Simple Explanation)
+
+## Scenario: 4 Developers Working on Same Project
+
+Project structure:
+
+main (stable code)
+
+├── login-feature (Dev1)  
+├── ocr-feature (Dev2)  
+├── payment-feature (Dev3)  
+└── dashboard-feature (Dev4)
+
+Nobody works directly on **main**.
+
+---
+
+# Developer Workflow Example (OCR Developer)
+
+| Scenario | Command |
+|---|---|
+| Clone repository | `git clone <repo-url>` |
+| Enter project folder | `cd project-name` |
+| Create OCR branch | `git switch -c ocr-feature` |
+| Start coding OCR | *(edit files)* |
+| Stage changes | `git add .` |
+| Commit code | `git commit -m "OCR feature added"` |
+| Push branch | `git push -u origin ocr-feature` |
+| Create Pull Request | *(GitHub UI)* |
+
+---
+
+# What is Code Review
+
+Code review = teammates check your code before merging to **main**.
+
+Example flow:
+
+Developer finishes OCR feature  
+↓  
+Push branch  
+↓  
+Create Pull Request (PR)  
+↓  
+Teammate reviews code  
+↓  
+Approve OR request changes  
+↓  
+Merge to main
+
+Example reviewer comment:
+
+```
+Please rename variable `txt` to `imageText`
+```
+
+Developer fixes:
+
+```bash
+git add .
+git commit -m "rename variable"
+git push
+```
+
+PR updates automatically.
+
+---
+
+# What is CI (Continuous Integration)
+
+CI = automatic testing when code is pushed.
+
+Example flow:
+
+Developer pushes code  
+↓  
+CI system starts automatically  
+↓  
+Project builds  
+↓  
+Tests run  
+↓  
+If tests fail ❌ → cannot merge  
+If tests pass ✅ → merge allowed
+
+Example automated commands CI runs:
+
+```bash
+npm install
+npm run build
+npm test
+```
+
+Purpose:
+
+Ensure new code **doesn't break the project**.
+
+---
+
+# What is CD (Continuous Deployment)
+
+CD = automatic deployment after merge.
+
+Example flow:
+
+Code merged to main  
+↓  
+Deployment system starts  
+↓  
+Project builds  
+↓  
+Website/app updates automatically
+
+Example:
+
+```
+merge to main
+      ↓
+build project
+      ↓
+deploy to server
+      ↓
+website updated
+```
+
+---
+
+# Full Real Workflow
+
+```
+Developer clones repo
+        ↓
+Creates feature branch
+        ↓
+Writes code
+        ↓
+git add .
+git commit
+        ↓
+git push
+        ↓
+Pull Request created
+        ↓
+Code Review happens
+        ↓
+CI runs tests
+        ↓
+Merge to main
+        ↓
+CD deploys application
+```
+
+---
+
+# Important Team Rule
+
+```
+Never push directly to main.
+Always use feature branches + Pull Requests.
+```
+
+This is the **standard workflow used in most companies.**
