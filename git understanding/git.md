@@ -153,3 +153,51 @@ git reset --hard - "Delete everything and go back" (careful!)
 ///////////////////
 
 # Branching 
+| Scenario                          | Git Command                     |
+| --------------------------------- | ------------------------------- |
+| See current branch                | `git branch`                    |
+| See all branches (local)          | `git branch`                    |
+| See remote branches               | `git branch -r`                 |
+| See all branches (local + remote) | `git branch -a`                 |
+| Create a new branch               | `git branch feature-login`      |
+| Switch to another branch          | `git checkout feature-login`    |
+| Create + switch branch (modern)   | `git checkout -b feature-login` |
+| Modern switch command             | `git switch feature-login`      |
+| Create + switch using new syntax  | `git switch -c feature-login`   |
+| Delete a branch                   | `git branch -d feature-login`   |
+| Force delete branch               | `git branch -D feature-login`   |
+
+# example
+| Situation              | Command                               |
+| ---------------------- | ------------------------------------- |
+| Start from main branch | `git checkout main`                   |
+| Create feature branch  | `git checkout -b login-feature`       |
+| Work on code           | *(edit files)*                        |
+| Stage changes          | `git add .`                           |
+| Commit changes         | `git commit -m "login feature added"` |
+| Go back to main        | `git checkout main`                   |
+| Merge feature branch   | `git merge login-feature`             |
+| Situation              | Command                            |
+| ---------------------- | ---------------------------------- |
+| Push branch first time | `git push -u origin login-feature` |
+| Push updates later     | `git push`                         |
+
+///// This shows branch history visually.
+git log --oneline --graph --all
+
+| Situation              | Command                           |
+| ---------------------- | --------------------------------- |
+| Rename current branch  | `git branch -m new-name`          |
+| Rename specific branch | `git branch -m old-name new-name` |
+
+# example 2 MERGING
+
+| Scenario        | Command                       |
+| --------------- | ----------------------------- |
+| Create branch   | `git switch -c login-feature` |
+| Work and commit | `git add .`                   |
+|                 | `git commit -m "login added"` |
+| Merge into main | `git checkout main`           |
+|                 | `git merge login-feature`     |
+
+
