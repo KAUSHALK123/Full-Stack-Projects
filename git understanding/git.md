@@ -36,7 +36,7 @@ Staged	Ready to be included in next snapshot
 ////
 The Three Areas of Git
 Git organizes your work into three areas:
-
+                                                                    
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
 │    Working      │     │    Staging      │     │   Repository    │
 │   Directory     │ ──► │     Area        │ ──► │   (Commits)     │
@@ -45,7 +45,7 @@ Git organizes your work into three areas:
 │  here           │     │  for commit     │     │  permanently    │
 └─────────────────┘     └─────────────────┘     └─────────────────┘
         │                       │                       │
-     git add              git commit              git log
+     git add                git commit              git log
     
 
 /////A commit is a snapshot of your project at a specific moment in time. It's like taking a photo and labeling it so you can find it later.
@@ -124,3 +124,32 @@ Green (+) lines were added
 White lines provide context
 
 ///////////////
+# RESTORE AND UNDO ING THINGS / FILES
+
+🔁 Quick cheat sheet
+Situation	Command
+Undo git add .	git restore --staged .
+Undo last commit (keep changes staged)	git reset --soft HEAD~1
+Undo last commit (keep changes unstaged)	git reset --mixed HEAD~1
+Delete commit + code	git reset --hard HEAD~1
+Undo pushed commit safely	git revert HEAD
+Remove pushed commit completely	git reset --hard HEAD~1 + git push --force
+
+Working Directory     Staging Area        Repository
+      │                    │                  │
+      │◄── restore ────────┤                  │
+      │                    │◄── restore ──────┤
+      │                    │    --staged      │
+      │◄───────────────────┼── reset --hard ──┤
+
+
+
+When to Use Each
+git restore - "I messed up this file, bring it back"
+git restore --staged - "I didn't mean to stage this"
+git reset --soft - "I want to redo my last commit"
+git reset --hard - "Delete everything and go back" (careful!)
+
+///////////////////
+
+# Branching 
