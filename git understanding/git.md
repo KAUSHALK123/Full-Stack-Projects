@@ -1,154 +1,308 @@
-# Creating a Repository
-To turn any folder into a Git repository, you use:
+# Git Basics
 
+## Creating a Repository
+
+To turn any folder into a Git repository:
+
+```bash
 git init
-That's it! This single command transforms an ordinary folder into a version-controlled project.
+```
 
-What Happens When You Run git init?
-When you initialize a repository, Git creates a hidden .git folder inside your project. This folder contains:
+This command converts a normal folder into a **Git repository**.
 
-All your project history - every snapshot you've ever taken
-Branch information - which timelines exist
-Configuration - settings for this repository
+---
+
+# What Happens When You Run `git init`
+
+Git creates a hidden `.git` folder inside your project.
+
+```
 my-project/
-├── .git/          ← Git's brain (hidden folder)
-│   ├── objects/   ← Stores all your snapshots
-│   ├── refs/      ← Tracks branches
-│   └── HEAD       ← Points to current branch
+├── .git/          ← Git's internal database
+│   ├── objects/   ← Stores commits and file snapshots
+│   ├── refs/      ← Stores branch references
+│   └── HEAD       ← Points to the current branch
 ├── index.html
 ├── style.css
 └── app.js
-The Working Directory
-Your working directory is everything in your project folder except the .git folder. This is where you actually edit files.
+```
 
-Git constantly watches your working directory to see what's changed since your last snapshot.
+### What `.git` Contains
 
-Repository States
-Files in a Git repository can be in one of these states:
+| Component | Purpose |
+|---|---|
+| objects | Stores commits and snapshots |
+| refs | Tracks branches and tags |
+| HEAD | Points to the current branch |
 
-State	Meaning
-Untracked	Git doesn't know about this file yet
-Tracked	Git is watching this file for changes
-Modified	You've changed the file since last snapshot
-Staged	Ready to be included in next snapshot
+The `.git` folder is basically **Git’s brain**.
 
+---
 
-////
-The Three Areas of Git
-Git organizes your work into three areas:
-                                                                    
+# Working Directory
+
+The **working directory** is your project folder **excluding the `.git` folder**.
+
+This is where you:
+
+- Write code
+- Edit files
+- Delete files
+
+Git monitors this directory to detect **changes since the last commit**.
+
+---
+
+# File States in Git
+
+Files in Git can be in these states.
+
+| State | Meaning |
+|---|---|
+| Untracked | Git doesn't know about the file yet |
+| Tracked | Git is monitoring the file |
+| Modified | File changed since last commit |
+| Staged | File ready for next commit |
+
+---
+
+# The Three Areas of Git
+
+Git organizes your work into three areas.
+
+```
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│    Working      │     │    Staging      │     │   Repository    │
-│   Directory     │ ──► │     Area        │ ──► │   (Commits)     │
+│ Working         │     │ Staging         │     │ Repository      │
+│ Directory       │ ──► │ Area            │ ──► │ (Commits)       │
 │                 │     │                 │     │                 │
-│  Edit files     │     │  Prepare files  │     │  Save snapshot  │
-│  here           │     │  for commit     │     │  permanently    │
+│ Edit files      │     │ Prepare files   │     │ Save snapshot   │
+│ here            │     │ for commit      │     │ permanently     │
 └─────────────────┘     └─────────────────┘     └─────────────────┘
         │                       │                       │
      git add                git commit              git log
-    
+```
 
-/////A commit is a snapshot of your project at a specific moment in time. It's like taking a photo and labeling it so you can find it later.
+### Workflow
 
-Creating a Commit
-Once you've staged your files, create a commit with:
+1. Edit files in **Working Directory**
+2. Stage files using **git add**
+3. Save snapshot using **git commit**
 
+---
+
+# Commits
+
+A **commit** is a snapshot of your project at a specific moment.
+
+Think of it like **saving a version of your project**.
+
+---
+
+## Creating a Commit
+
+```bash
 git commit -m "Your message here"
-The -m flag lets you add a message describing what changed.
+```
 
-Understanding Commit Hashes
-Every commit gets a unique identifier called a SHA hash:
+Example:
 
+```bash
+git commit -m "Add user authentication"
+```
+
+The `-m` flag lets you add a **description of the changes**.
+
+---
+
+# Commit Hash
+
+Every commit has a **unique SHA hash**.
+
+Example:
+
+```
 a1b2c3d4e5f6789...
-This 40-character string is like a fingerprint - no two commits will ever have the same hash. Usually, you only need the first 7 characters to identify a commit.
+```
 
-What's Inside a Commit?
-Each commit stores:
+Usually only the **first 7 characters** are used.
 
-Component	Description
-Tree	Snapshot of all your files
-Parent	Link to the previous commit
-Author	Who made the commit
-Message	Your description
-Timestamp	When it was created
-Hash	Unique identifier
+```
+a1b2c3d
+```
 
-/////
+---
+
+# What a Commit Contains
+
+| Component | Description |
+|---|---|
+| Tree | Snapshot of all files |
+| Parent | Previous commit |
+| Author | Who created the commit |
+| Message | Description of change |
+| Timestamp | When commit was made |
+| Hash | Unique commit identifier |
+
+---
+
 # Viewing Commit History
-To see all your commits:
 
+To see all commits:
+
+```bash
 git log
-This shows each commit with:
+```
 
-The full commit hash
-Author name and email
-Date and time
-Commit message
-Compact View
-For a shorter view, use:
+This shows:
 
+- commit hash
+- author
+- date
+- commit message
+
+---
+
+## Compact History
+
+```bash
 git log --oneline
-This shows one commit per line with just the short hash and message.
+```
 
-Reading the Log
+Example:
+
+```
+a1b2c3d Add authentication feature
+f4e5d6c Create project structure
+```
+
+---
+
+# Understanding HEAD
+
+Example log entry:
+
+```
 commit a1b2c3d (HEAD -> main)
-Author: You <you@email.com>
-Date:   Mon Jan 15 10:30:00 2024
+Author: You
+Date: Mon Jan 15
 
-    Add user authentication feature
+Add authentication feature
+```
 
-commit f4e5d6c
-Author: You <you@email.com>
-Date:   Sun Jan 14 15:20:00 2024
+Meaning:
 
-    Create initial project structure
-The HEAD -> main tells you which commit you're currently on.
+```
+HEAD is currently pointing to the main branch
+```
 
-Comparing Changes with Diff
-To see what changed between versions:
+---
 
-# Changes in working directory (not yet staged)
+# Comparing Changes with Diff
+
+### Changes in working directory
+
+```bash
 git diff
+```
 
-# Changes that are staged
+### Changes staged for commit
+
+```bash
 git diff --staged
+```
 
-# Compare two commits
+### Compare two commits
+
+```bash
 git diff a1b2c3d f4e5d6c
-Understanding Diff Output
-- This line was removed
-+ This line was added
-  This line is unchanged
-Red (-) lines were removed
-Green (+) lines were added
-White lines provide context
+```
 
-///////////////
-# RESTORE AND UNDO ING THINGS / FILES
+---
 
-🔁 Quick cheat sheet
-Situation	Command
-Undo git add .	git restore --staged .
-Undo last commit (keep changes staged)	git reset --soft HEAD~1
-Undo last commit (keep changes unstaged)	git reset --mixed HEAD~1
-Delete commit + code	git reset --hard HEAD~1
-Undo pushed commit safely	git revert HEAD
-Remove pushed commit completely	git reset --hard HEAD~1 + git push --force
+# Diff Output
 
+```
+- line removed
++ line added
+  unchanged line
+```
+
+| Symbol | Meaning |
+|---|---|
+| - | Removed line |
+| + | Added line |
+| space | Context line |
+
+---
+
+# Undoing Changes in Git
+
+## Quick Cheat Sheet
+
+| Situation | Command |
+|---|---|
+| Undo `git add .` | `git restore --staged .` |
+| Undo last commit (keep changes staged) | `git reset --soft HEAD~1` |
+| Undo last commit (keep changes unstaged) | `git reset --mixed HEAD~1` |
+| Delete commit and changes | `git reset --hard HEAD~1` |
+| Undo pushed commit safely | `git revert HEAD` |
+| Remove pushed commit completely | `git reset --hard HEAD~1` + `git push --force` |
+
+---
+
+# Git Restore vs Reset
+
+```
 Working Directory     Staging Area        Repository
       │                    │                  │
       │◄── restore ────────┤                  │
       │                    │◄── restore ──────┤
       │                    │    --staged      │
       │◄───────────────────┼── reset --hard ──┤
+```
 
+---
 
+# When to Use Each Command
 
-When to Use Each
-git restore - "I messed up this file, bring it back"
-git restore --staged - "I didn't mean to stage this"
-git reset --soft - "I want to redo my last commit"
-git reset --hard - "Delete everything and go back" (careful!)
+| Command | When to Use |
+|---|---|
+| git restore | Restore a modified file |
+| git restore --staged | Unstage a file |
+| git reset --soft | Undo commit but keep staged changes |
+| git reset --hard | Completely revert to previous commit (dangerous) |
+| git revert | Safely undo a commit already pushed |
+
+---
+
+# Common Git Workflow
+
+```
+Edit files
+   ↓
+git add .
+   ↓
+git commit -m "message"
+   ↓
+git push
+```
+
+---
+
+# Most Used Git Commands
+
+```bash
+git init
+git status
+git add .
+git commit -m "message"
+git log --oneline
+git diff
+git restore
+git reset
+git push
+git pull
+```
 
 ///////////////////
 
@@ -199,5 +353,52 @@ git log --oneline --graph --all
 |                 | `git commit -m "login added"` |
 | Merge into main | `git checkout main`           |
 |                 | `git merge login-feature`     |
+
+
+# Fresh Empty Repo → Start Coding → Push (ONLY SCENARIOS + CMDS)
+| Scenario              | Command                            |
+| --------------------- | ---------------------------------- |
+| Initialize git repo   | `git init`                         |
+| Check repo status     | `git status`                       |
+| Add all files         | `git add .`                        |
+| Commit code           | `git commit -m "first commit"`     |
+| Add remote repo       | `git remote add origin <repo-url>` |
+| Rename branch to main | `git branch -M main`               |
+| Push code to remote   | `git push -u origin main`          |
+
+
+#Clone Existing Repo → Start Coding
+
+| Scenario               | Command                         |
+| ---------------------- | ------------------------------- |
+| Clone repo from GitHub | `git clone <repo-url>`          |
+| Go into project folder | `cd repo-name`                  |
+| Check branches         | `git branch`                    |
+| Start coding           | *(edit files)*                  |
+| Add changes            | `git add .`                     |
+| Commit changes         | `git commit -m "feature added"` |
+| Push changes           | `git push`                      |
+
+# Feature Branch Workflow (Used in Companies)
+
+| Scenario              | Command                            |
+| --------------------- | ---------------------------------- |
+| Create feature branch | `git switch -c login-feature`      |
+| Code changes          | *(edit files)*                     |
+| Stage changes         | `git add .`                        |
+| Commit changes        | `git commit -m "login feature"`    |
+| Push branch           | `git push -u origin login-feature` |
+| Merge later           | `git switch main`                  |
+|                       | `git merge login-feature`          |
+
+
+# UPDATE UR BRANCH WITH LATEST MAIN
+
+| Scenario                 | Command                    |
+| ------------------------ | -------------------------- |
+| Get latest remote code   | `git fetch origin`         |
+| Switch to feature branch | `git switch login-feature` |
+| Rebase with main         | `git rebase origin/main`   |
+
 
 
