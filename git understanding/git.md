@@ -1,5 +1,5 @@
 # Git Basics
-BASIC UNDERSTANDING AND USE CASES
+BASIC GIT UNDERSTANDING AND USE CASES
 ## Creating a Repository
 
 To turn any folder into a Git repository:
