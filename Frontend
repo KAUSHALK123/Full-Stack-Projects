@@ -395,3 +395,7 @@ function Badge({ available }) {
 }
 
 ///////////////////////////////////////////
+State with useState
+State is what makes React components interactive. While props are passed from parent to child (and are read-only), state is managed within a component and can change over time.
+
+
